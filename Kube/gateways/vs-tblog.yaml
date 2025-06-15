@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: tblogtdebian
+  namespace: hugo
+spec:
+  hosts:
+    - "tblog.tdebian.com"
+  gateways:
+    - nginx-gateway
+  http:
+    - route:
+        - destination:
+            host: nginx-svc-hugo.hugo.svc.cluster.local
