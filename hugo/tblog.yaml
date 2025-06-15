@@ -54,5 +54,5 @@ spec:
       volumes:
         - name: nas-volume
           persistentVolumeClaim:
-            claimName: nas-pvc
+            claimName: tblog-pvc
 
