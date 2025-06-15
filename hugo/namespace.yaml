@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: "2025-05-04T21:20:35Z"
+  labels:
+    istio-injection: enabled
+    kubernetes.io/metadata.name: hugo
+  name: hugo
+  resourceVersion: "957757"
+  uid: 9cd15064-60b7-43cd-9923-d4ceb503a206
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
