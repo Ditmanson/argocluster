@@ -31,4 +31,3 @@ spec:
         protocol: HTTP
       hosts:
         - "tech.tdebian.com"
-       - "funfact.tdebian.com"
