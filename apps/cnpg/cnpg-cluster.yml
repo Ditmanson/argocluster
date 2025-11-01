@@ -14,6 +14,8 @@ spec:
     targetRevision: 0.3.1
     helm:
       releaseName: cluster
+      valueFiles:
+        - values.yaml
   syncPolicy:
     automated:
       prune: true
