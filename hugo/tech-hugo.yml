@@ -49,11 +49,11 @@ spec:
         ports:
         - containerPort: 80
         volumeMounts:
-          - name: local-volume
+          - name: nas-volume
             mountPath: /usr/share/nginx/html
             subPath: ""
       volumes:
-        - name: local-volume
+        - name: nas-volume
           persistentVolumeClaim:
             claimName: tech-pvc
 
