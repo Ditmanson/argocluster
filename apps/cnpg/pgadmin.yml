@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin
+  namespace: database
+spec:
+  selector:
+   matchLabels:
+    app: pgadmin
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pgadmin
+    spec:
+      containers:
+        - name: pgadmin4
+          image: dpage/pgadmin4
+          env:
+           - name: PGADMIN_DEFAULT_EMAIL
+             value: "travis@tdebian.com"
+           - name: PGADMIN_DEFAULT_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: pgadmin
+                 key: password
+           - name: PGADMIN_PORT
+             value: "80"
+           - name: PGADMIN_SERVER_MODE
+             value: "True"
+           - name: PGADMIN_DB_URI
+             valueFrom:
+               secretKeyRef:
+                 name: cluster-app
+                 key: uri  # Assuming `uri` holds the PostgreSQL connection string
+           - name: PGADMIN_DB_USER
+             valueFrom:
+               secretKeyRef:
+                 name: cluster-app
+                 key: user  # Assuming `user` holds the PostgreSQL username
+           - name: PGADMIN_DB_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: cluster-app
+                 key: password  # Assuming `password` holds the PostgreSQL password
+           - name: PGADMIN_DB_HOST
+             valueFrom:
+               secretKeyRef:
+                 name: cluster-app
+                 key: host  # Assuming `host` holds the PostgreSQL host
+           - name: PGADMIN_DB_PORT
+             valueFrom:
+               secretKeyRef:
+                 name: cluster-app
+                 key: port  # Assuming `port` holds the PostgreSQL port
+
+          ports:
+            - containerPort: 80
+              name: pgadminport
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin
+  namespace: database
+  labels:
+    app: pgadmin
+spec:
+  selector:
+   app: pgadmin
+  type: LoadBalancer
+  ports:
+    - port: 80
+      protocol: TCP
+      name: pgadminport
