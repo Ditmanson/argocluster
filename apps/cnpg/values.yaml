@@ -188,10 +188,10 @@ cluster:
     storageClass: "database"
 
   # -- The UID of the postgres user inside the image, defaults to 26
-  postgresUID: -1
+  postgresUID: 65534
 
   # -- The GID of the postgres user inside the image, defaults to 26
-  postgresGID: -1
+  postgresGID: 65534
 
   # -- Customization of service definitions. Please refer to https://cloudnative-pg.io/documentation/1.24/service_management/
   services: {}
