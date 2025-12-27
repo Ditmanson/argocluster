@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: griz-service
+  namespace: griz
+spec:
+  selector:
+    app: griz
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: griz-deployment
+  namespace: griz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: griz
+  template:
+    metadata:
+      labels:
+        app: griz
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      volumes:
+        - name: pgpass-volume
+          secret:
+            secretName: pgpass-secret  # Mounted pgpass secret
+            defaultMode: 0600
+      initContainers:
+        - name: migrate
+          image: ghcr.io/ditmanson/django:0.0.9
+          #command: ["/env/bin/python", "manage.py", "migrate"]
+          command:
+            - sh
+            - -c
+            - |
+                ls -al /
+                ls -al /app
+                /env/bin/python manage.py migrate
+          volumeMounts:
+            - name: pgpass-volume
+              mountPath: /app/.my_pgpass
+              subPath: .my_pgpass
+              readOnly: true
+      containers:
+        - name: griz
+          image: ghcr.io/ditmanson/django:0.0.9
+          command: ["/env/bin/gunicorn"]
+          args: ["--bind", ":8000", "--workers", "3", "tdebian.wsgi"]
+          ports:
+            - containerPort: 8000
+          env:
+            - name: PGSERVICEFILE
+              value: "/.pg_service.conf"
+          volumeMounts:
+            - name: pgpass-volume
+              mountPath: /etc/secrets/.my_pgpass
+              subPath: .my_pgpass
+              readOnly: true
