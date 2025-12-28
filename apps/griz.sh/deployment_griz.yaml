@@ -37,7 +37,7 @@ spec:
             defaultMode: 0600
       initContainers:
         - name: migrate
-          image: ghcr.io/ditmanson/django:0.0.9
+          image: ghcr.io/ditmanson/griz:0.0.1
           #command: ["/env/bin/python", "manage.py", "migrate"]
           command:
             - sh
@@ -53,7 +53,7 @@ spec:
               readOnly: true
       containers:
         - name: griz
-          image: ghcr.io/ditmanson/django:0.0.9
+          image: ghcr.io/ditmanson/griz:0.0.1
           command: ["/env/bin/gunicorn"]
           args: ["--bind", ":8000", "--workers", "3", "tdebian.wsgi"]
           ports:

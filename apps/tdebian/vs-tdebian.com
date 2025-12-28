@@ -1,15 +1,14 @@
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
-  name: techtdebian
-  namespace: hugo
+  name: tdebian
+  namespace: tdebian
 spec:
   hosts:
-    - "tech.tdebian.com"
-    - "tech.griz.sh"
+    - "tdebian.com"
   gateways:
     - nginx-gateway
   http:
     - route:
         - destination:
-            host: nginx-svc-tech.hugo.svc.cluster.local
+            host: tdebian-service.tdebian.svc.cluster.local
