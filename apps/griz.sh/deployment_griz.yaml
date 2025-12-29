@@ -31,13 +31,21 @@ spec:
       imagePullSecrets:
         - name: ghcr-secret
       volumes:
-        - name: pgpass-volume
+        - name: pgpass-volume-etc
           secret:
             secretName: pgpass-secret  # Mounted pgpass secret
             defaultMode: 0600
+        - name: pgpass-volume-app
+          secret:
+            secretName: pgpass-secret  # Mounted pgpass secret
+            defaultMode: 0600
+        - name: nas-volume
+          persistentVolumeClaim:
+            claimName: pvc-griz
+
       initContainers:
         - name: migrate
-          image: ghcr.io/ditmanson/griz:0.0.1
+          image: ghcr.io/ditmanson/griz:0.0.5
           #command: ["/env/bin/python", "manage.py", "migrate"]
           command:
             - sh
@@ -47,13 +55,13 @@ spec:
                 ls -al /app
                 /env/bin/python manage.py migrate
           volumeMounts:
-            - name: pgpass-volume
+            - name: pgpass-volume-app
               mountPath: /app/.my_pgpass
               subPath: .my_pgpass
               readOnly: true
       containers:
         - name: griz
-          image: ghcr.io/ditmanson/griz:0.0.1
+          image: ghcr.io/ditmanson/griz:0.0.5
           command: ["/env/bin/gunicorn"]
           args: ["--bind", ":8000", "--workers", "3", "tdebian.wsgi"]
           ports:
@@ -62,7 +70,14 @@ spec:
             - name: PGSERVICEFILE
               value: "/.pg_service.conf"
           volumeMounts:
-            - name: pgpass-volume
+            - name: pgpass-volume-etc
               mountPath: /etc/secrets/.my_pgpass
               subPath: .my_pgpass
               readOnly: true
+            - name: pgpass-volume-app
+              mountPath: /app/.my_pgpass
+              subPath: .my_pgpass
+              readOnly: true
+            - name: nas-volume
+              mountPath: /static
+              subPath: ""
