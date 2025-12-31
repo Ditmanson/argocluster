@@ -45,7 +45,7 @@ spec:
 
       initContainers:
         - name: migrate
-          image: ghcr.io/ditmanson/griz:0.0.5
+          image: ghcr.io/ditmanson/griz:0.0.9
           #command: ["/env/bin/python", "manage.py", "migrate"]
           command:
             - sh
@@ -61,7 +61,7 @@ spec:
               readOnly: true
       containers:
         - name: griz
-          image: ghcr.io/ditmanson/griz:0.0.5
+          image: ghcr.io/ditmanson/griz:0.0.9
           command: ["/env/bin/gunicorn"]
           args: ["--bind", ":8000", "--workers", "3", "tdebian.wsgi"]
           ports:
@@ -79,5 +79,4 @@ spec:
               subPath: .my_pgpass
               readOnly: true
             - name: nas-volume
-              mountPath: /static
-              subPath: ""
+              mountPath: /app/static
