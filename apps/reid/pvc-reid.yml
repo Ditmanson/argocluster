@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-reid
+  namespace: reid
+spec:
+  storageClassName: nfs-csi
+  accessModes: 
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
+
