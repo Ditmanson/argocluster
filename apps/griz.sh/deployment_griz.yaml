@@ -45,7 +45,7 @@ spec:
 
       initContainers:
         - name: migrate
-          image: ghcr.io/ditmanson/griz:0.0.14
+          image: ghcr.io/ditmanson/griz:0.0.16
           #command: ["/env/bin/python", "manage.py", "migrate"]
           command:
             - sh
@@ -61,7 +61,7 @@ spec:
               readOnly: true
       containers:
         - name: griz
-          image: ghcr.io/ditmanson/griz:0.0.14
+          image: ghcr.io/ditmanson/griz:0.0.16
           command: ["/env/bin/gunicorn"]
           args: ["--bind", ":8000", "--workers", "3", "tdebian.wsgi"]
           ports:
