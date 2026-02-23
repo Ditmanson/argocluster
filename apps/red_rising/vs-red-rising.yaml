@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: red-risinggriz
+  namespace: griz
+spec:
+  hosts:
+    - red-rising.griz.sh
+  gateways:
+    - griz-gateway
+  http:
+    - route:
+        - destination:
+            host: nginx-svc-red-rising.griz.svc.cluster.local

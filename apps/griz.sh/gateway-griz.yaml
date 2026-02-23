@@ -16,6 +16,7 @@ spec:
       - griz.sh
       - tech.griz.sh
       - docs.griz.sh
+      - red-rising.griz.sh
     - port:
         number: 443
         name: httpsgriz

@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc-red-rising
+  namespace: griz
+  labels:
+    app: nginx-red-rising
+    service: s1
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: nginx-red-rising
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nginx-red-rising-serviceaccount
+  namespace: griz
+  labels:
+    account: nginx-red-rising
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-red-rising
+  namespace: griz
+  labels:
+    app: nginx-red-rising
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-red-rising
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: nginx-red-rising
+        version: v1
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: nas-volume
+            mountPath: /usr/share/nginx/html
+            subPath: ""
+      volumes:
+        - name: nas-volume
+          persistentVolumeClaim:
+            claimName: red-rising-pvc
+
