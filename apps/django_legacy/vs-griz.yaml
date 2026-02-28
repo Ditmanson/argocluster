@@ -5,7 +5,7 @@ metadata:
   namespace: griz
 spec:
   hosts:
-    - griz.sh
+    - django.griz.sh
   gateways:
     - griz-gateway
   http:

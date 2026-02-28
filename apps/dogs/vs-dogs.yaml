@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: dogsgriz
+  namespace: griz
+spec:
+  hosts:
+    - griz.sh
+  gateways:
+    - griz-gateway
+  http:
+    - route:
+        - destination:
+            host: nginx-svc-dogs.griz.svc.cluster.local

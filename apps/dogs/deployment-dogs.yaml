@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc-dogs
+  namespace: griz
+  labels:
+    app: nginx-dogs
+    service: s1
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: nginx-dogs
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nginx-dogs-serviceaccount
+  namespace: griz
+  labels:
+    account: nginx-dogs
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-dogs
+  namespace: griz
+  labels:
+    app: nginx-dogs
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-dogs
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: nginx-dogs
+        version: v1
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: nas-volume
+            mountPath: /usr/share/nginx/html
+            subPath: ""
+      volumes:
+        - name: nas-volume
+          persistentVolumeClaim:
+            claimName: dogs-pvc
+
