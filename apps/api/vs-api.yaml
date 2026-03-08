@@ -7,7 +7,7 @@ spec:
   hosts:
     - api.griz.sh
   gateways:
-    - api-gateway
+    - griz-gateway
   http:
     - route:
         - destination:
