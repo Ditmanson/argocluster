@@ -20,6 +20,7 @@ spec:
       - docs.griz.sh
       - red-rising.griz.sh
       - django.griz.sh
+      - api.griz.sh
     - port:
         number: 443
         name: httpsgriz
@@ -33,3 +34,4 @@ spec:
         - docs.griz.sh
         - red-rising.griz.sh
         - django.griz.sh
+        - api.griz.sh

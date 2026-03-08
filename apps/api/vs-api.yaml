@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: api
+  namespace: griz
+spec:
+  hosts:
+    - api.griz.sh
+  gateways:
+    - api-gateway
+  http:
+    - route:
+        - destination:
+            host: api-service.griz.svc.cluster.local
