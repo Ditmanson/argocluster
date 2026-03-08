@@ -1,7 +1,12 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  creationTimestamp: null
+  labels:
+    istio-injection: enabled
+    kubernetes.io/metadata.name: griz
   name: griz
-spec: {}
-status: {}
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
