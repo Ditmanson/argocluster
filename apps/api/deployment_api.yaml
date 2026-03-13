@@ -37,7 +37,7 @@ spec:
 
       initContainers:
         - name: migrate
-          image: ghcr.io/ditmanson/api:v1.0.2
+          image: ghcr.io/ditmanson/api:v1.0.3
           command:
             - sh
             - -c
@@ -47,7 +47,7 @@ spec:
                 /env/bin/python manage.py migrate
       containers:
         - name: api
-          image: ghcr.io/ditmanson/api:v1.0.2
+          image: ghcr.io/ditmanson/api:v1.0.3
           command: ["/env/bin/gunicorn"]
           args: ["--bind", ":8000", "--workers", "2", "api.wsgi"]
           ports:
